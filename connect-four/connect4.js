@@ -8,7 +8,7 @@
 const WIDTH = 7;
 const HEIGHT = 6;
 
-const currPlayer = 1; // active player: 1 or 2
+let currPlayer = 1; // active player: 1 or 2
 // const board = []; // array of rows, each row is array of cells  (board[y][x])
 
 /** makeBoard: create in-JS board structure:
@@ -25,10 +25,15 @@ const arrayCreator = (length, val) => {
 	return arr;
 };
 
+// // TODO: set "board" to empty HEIGHT x WIDTH matrix array
 function makeBoard() {
-	// // TODO: set "board" to empty HEIGHT x WIDTH matrix array
-	const rowArray = arrayCreator(WIDTH, null);
-	return (gameBoard = arrayCreator(HEIGHT, rowArray));
+	const board = [];
+	const emptyValues = arrayCreator(WIDTH, null);
+	console.log(emptyValues);
+	for (let i = 0; i < HEIGHT; i++) {
+		board.push([ ...emptyValues ]);
+	}
+	return board;
 }
 
 /** makeHtmlBoard: make HTML table and row of column tops. */
@@ -66,8 +71,13 @@ function makeHtmlBoard() {
 /** findSpotForCol: given column x, return top empty y (null if filled) */
 
 function findSpotForCol(x) {
-	// TODO: write the real version of this, rather than always returning 0
-	return 0;
+	// // TODO: write the real version of this, rather than always returning 0
+	for (let row = board.length - 1; row > -1; row--) {
+		if (board[row][x] === null) {
+			return row;
+		}
+	}
+	return null;
 }
 
 /** placeInTable: update DOM to place piece into HTML table of board */
@@ -86,6 +96,7 @@ function placeInTable(y, x) {
 
 function endGame(msg) {
 	// TODO: pop up alert message
+	alert(msg);
 }
 
 /** handleClick: handle click of column top to play piece */
@@ -101,10 +112,8 @@ function handleClick(evt) {
 	}
 
 	// place piece in board and add to HTML table
-	// TODO: add line to update in-memory board
+	// // TODO: add line to update in-memory board
 	board[y][x] = currPlayer;
-	console.log(y, x);
-	console.log(board);
 	placeInTable(y, x);
 
 	// check for win
@@ -119,8 +128,7 @@ function handleClick(evt) {
 		for (let row = 0; row < board.length; row++) {
 			tests.push(board[row].every((player) => player !== null));
 		}
-
-		return tests.every((row) => row === true) ? endGame() : undefined;
+		return tests.every((row) => row === true) ? endGame('No one wins. You both lose!') : undefined;
 	})();
 
 	// switch players

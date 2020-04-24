@@ -66,6 +66,8 @@ function makeHtmlBoard() {
 		}
 		htmlBoard.append(row);
 	}
+
+	createCurrPlayerDisplay();
 }
 
 /** findSpotForCol: given column x, return top empty y (null if filled) */
@@ -91,6 +93,15 @@ function placeInTable(y, x) {
 
 	selectedCellDiv.classList.add('piece', 'p' + currPlayer);
 	selectedCell.append(selectedCellDiv);
+}
+
+function createCurrPlayerDisplay() {
+	const displayPlayer = document.getElementById('currPlayer');
+	const printPlayer = document.createElement('h1');
+
+	printPlayer.innerText = `Player ${currPlayer}'s Turn`;
+
+	displayPlayer.append(printPlayer);
 }
 
 /** endGame: announce game end */

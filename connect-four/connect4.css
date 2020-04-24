@@ -25,6 +25,16 @@
 	background-color: blue;
 }
 
+/* ? Initially I assigned the same class to the player turn text as the piece */
+/* ? But I didn't like the background color and wanted text. Is there still a way to merge these classes? */
+.player-display[player-turn='1'] {
+	color: red;
+}
+
+.player-display[player-turn='2'] {
+	color: blue;
+}
+
 /* column-top is table row of clickable areas for each column */
 
 #column-top td {
@@ -38,6 +48,7 @@
 #currPlayer {
 	float: left;
 	margin-left: 5%;
+	font-family: Quicksand;
 }
 
 #game {

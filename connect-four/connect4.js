@@ -100,6 +100,8 @@ function createCurrPlayerDisplay() {
 	const playerText = document.createElement('h1');
 
 	playerText.innerText = `Player ${currPlayer}'s Turn`;
+	playerText.classList.add('player-display');
+	playerText.setAttribute('player-turn', 1); //Create attribute to toggle between 1 and 2
 
 	playerContainer.append(playerText);
 }
@@ -108,6 +110,8 @@ function updateCurrPlayer() {
 	currPlayer = currPlayer === 1 ? 2 : 1;
 
 	const playerText = document.querySelector('h1');
+
+	playerText.setAttribute('player-turn', currPlayer); // Toggle attribute to change font color
 	playerText.innerText = `Player ${currPlayer}'s Turn`;
 }
 
@@ -121,6 +125,7 @@ function endGame(msg) {
 /** handleClick: handle click of column top to play piece */
 
 function handleClick(evt) {
+	// ? Should we have evt.preventDefault();
 	// get x from ID of clicked cell
 	let x = +evt.target.id;
 

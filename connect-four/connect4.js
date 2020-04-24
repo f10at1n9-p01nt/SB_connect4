@@ -96,18 +96,25 @@ function placeInTable(y, x) {
 }
 
 function createCurrPlayerDisplay() {
-	const displayPlayer = document.getElementById('currPlayer');
-	const printPlayer = document.createElement('h1');
+	const playerContainer = document.getElementById('currPlayer');
+	const playerText = document.createElement('h1');
 
-	printPlayer.innerText = `Player ${currPlayer}'s Turn`;
+	playerText.innerText = `Player ${currPlayer}'s Turn`;
 
-	displayPlayer.append(printPlayer);
+	playerContainer.append(playerText);
+}
+
+function updateCurrPlayer() {
+	currPlayer = currPlayer === 1 ? 2 : 1;
+
+	const playerText = document.querySelector('h1');
+	playerText.innerText = `Player ${currPlayer}'s Turn`;
 }
 
 /** endGame: announce game end */
 
 function endGame(msg) {
-	// TODO: pop up alert message
+	// // TODO: pop up alert message
 	alert(msg);
 }
 
@@ -148,7 +155,8 @@ function handleClick(evt) {
 
 	// switch players
 	// // TODO: switch currPlayer 1 <-> 2
-	currPlayer = currPlayer === 1 ? 2 : 1;
+	// currPlayer = currPlayer === 1 ? 2 : 1;
+	updateCurrPlayer();
 }
 
 /** checkForWin: check board cell-by-cell for "does a win start here?" */

@@ -28,10 +28,10 @@ const arrayCreator = (length, val) => {
 // // TODO: set "board" to empty HEIGHT x WIDTH matrix array
 function makeBoard() {
 	const board = [];
+	// Create row of null values the width of the game board
 	const emptyValues = arrayCreator(WIDTH, null);
-	console.log(emptyValues);
 	for (let i = 0; i < HEIGHT; i++) {
-		board.push([ ...emptyValues ]);
+		board.push([ ...emptyValues ]); // * Bug fix - make sure to create new copy
 	}
 	return board;
 }
@@ -40,7 +40,7 @@ function makeBoard() {
 
 function makeHtmlBoard() {
 	// // TODO: get "htmlBoard" variable from the item in HTML w/ID of "board"
-	const htmlBoard = document.getElementById('board');
+	const htmlBoard = document.getElementById('board'); // the table element
 	// // TODO: add comment for this code
 	const top = document.createElement('tr');
 	top.setAttribute('id', 'column-top');
@@ -72,6 +72,7 @@ function makeHtmlBoard() {
 
 function findSpotForCol(x) {
 	// // TODO: write the real version of this, rather than always returning 0
+	// Work from bottom to top in each column x and return row with first null.
 	for (let row = board.length - 1; row > -1; row--) {
 		if (board[row][x] === null) {
 			return row;
@@ -122,7 +123,10 @@ function handleClick(evt) {
 	}
 
 	// check for tie
-	// TODO: check if all cells in board are filled; if so call, call endGame
+	// // TODO: check if all cells in board are filled; if so call, call endGame
+	// Immediately Invoked
+	// ? I could use similar log to the above function: have function return boolean
+	// ? and run a conditional on the function. I kept the contrast so I could ask about the two approaches.
 	(function checkAllFilled() {
 		const tests = [];
 		for (let row = 0; row < board.length; row++) {
@@ -132,23 +136,30 @@ function handleClick(evt) {
 	})();
 
 	// switch players
-	// TODO: switch currPlayer 1 <-> 2
+	// // TODO: switch currPlayer 1 <-> 2
 	currPlayer = currPlayer === 1 ? 2 : 1;
 }
 
 /** checkForWin: check board cell-by-cell for "does a win start here?" */
 
 function checkForWin() {
+	// ? Private method?
 	function _win(cells) {
 		// Check four cells to see if they're all color of current player
 		//  - cells: list of four (y, x) cells
 		//  - returns true if all are legal coordinates & all match currPlayer
 
+		// Goes through each array in the passed in array of cells
+		// Checks if y and x are valid
+		// Checks if the player in the board for each cells is the same
+		// If passes all checks, returns true
 		return cells.every(([ y, x ]) => y >= 0 && y < HEIGHT && x >= 0 && x < WIDTH && board[y][x] === currPlayer);
 	}
 
 	// TODO: read and understand this code. Add comments to help you.
-
+	// Creates an array of 4 cells in different directions with every possible y, x inside the board dimensions
+	// ? Could we have stopped the x and y variables sooner? Thus avoiding so many checks in _win()
+	// * Answered my own question: No, because we need to check the last row for horizontal wins and the last column for vertical wins
 	for (let y = 0; y < HEIGHT; y++) {
 		for (let x = 0; x < WIDTH; x++) {
 			let horiz = [ [ y, x ], [ y, x + 1 ], [ y, x + 2 ], [ y, x + 3 ] ];
@@ -156,6 +167,8 @@ function checkForWin() {
 			let diagDR = [ [ y, x ], [ y + 1, x + 1 ], [ y + 2, x + 2 ], [ y + 3, x + 3 ] ];
 			let diagDL = [ [ y, x ], [ y + 1, x - 1 ], [ y + 2, x - 2 ], [ y + 3, x - 3 ] ];
 
+			// passes each array into the _win function
+			// if any are true, we have a winner
 			if (_win(horiz) || _win(vert) || _win(diagDR) || _win(diagDL)) {
 				return true;
 			}
